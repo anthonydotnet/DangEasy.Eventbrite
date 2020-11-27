@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 
 .DS_Store
+
+tests/Library.Tests/appsettings.json
