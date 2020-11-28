@@ -1,35 +1,41 @@
-using System;
 using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 using Newtonsoft.Json;
 using RequestModels = DangEasy.Eventbrite.Models.Request;
-using ResponseModels = DangEasy.Eventbrite.Models.Response;
 using System.Linq;
+using DangEasy.Eventbrite.Models.Response;
+using DangEasy.Eventbrite.Models.Response.Paginated;
+using RequestConstants = DangEasy.Eventbrite.Constants.Request;
 
 namespace DangEasy.Eventbrite.Services
 {
     public interface IEventbriteService
     {
-        Task<ResponseModels.StructuredContent> CreateStructuredContent(long eventId, RequestModels.StructuredContent content);
-        Task<ResponseModels.StructuredContent> CreateStructuredDigitalContent(long eventId, RequestModels.StructuredDigitalContent content);
-        Task<ResponseModels.Event> CreateEvent(RequestModels.Event @event);
-        Task<ResponseModels.TicketClass> CreateTicketClass(long eventId, RequestModels.TicketClass ticketClass);
+        long OrganizationId { get; }
+
+        Task<StructuredContentPaginated> CreateStructuredContent(long eventId, RequestModels.StructuredContent content);
+        Task<StructuredDigitalContentPaginated> CreateStructuredDigitalContent(long eventId, RequestModels.StructuredDigitalContent content);
+        Task<Event> CreateEvent(RequestModels.Event @event);
+        Task<TicketClass> CreateTicketClass(long eventId, RequestModels.TicketClass ticketClass);
 
         Task<bool> DeleteEvent(long eventId);
 
-        Task<ResponseModels.Event> DuplicateEvent(long eventId);
-        Task<ResponseModels.Event> GetEvent(long eventId);
-        Task<ResponseModels.Organization> GetOrganization(long id);
+        Task<Event> CopyEvent(long eventId);
+        Task<Event> GetEvent(long eventId);
+        Task<EventPaginated> GetEvents(long organizationId);
+        Task<Organization> GetOrganization(long id);
 
-        Task<ResponseModels.StructuredContent> GetStructuredContent(long eventId, string purpose);
-        Task<ResponseModels.StructuredDigitalContent> GetStructuredDigitalContent(long eventId, string purpose);
+        Task<StructuredContentPaginated> GetStructuredContent(long eventId);
+        Task<StructuredDigitalContentPaginated> GetStructuredDigitalContent(long eventId);
 
-        Task<ResponseModels.Paginated.TicketClassPaginated> GetTicketClasses(long eventId);
+        Task<TicketClassPaginated> GetTicketClasses(long eventId);
         Task<bool> PublishEvent(long eventId);
         Task<bool> UnPublishEvent(long eventId);
 
-        Task<ResponseModels.Event> UpdateEvent(long eventId, RequestModels.Event @event);
+        Task<Event> UpdateEvent(long eventId, RequestModels.Event @event);
+
+        
     }
 
 
@@ -64,44 +70,7 @@ namespace DangEasy.Eventbrite.Services
         }
 
 
-        public async Task<ResponseModels.TicketClass> CreateTicketClass(long eventId, RequestModels.TicketClass ticketClass)
-        {
-            var request = BuildRequest($"events/{eventId}/ticket_classes/", ContentTypeJson);
-
-            var json = JsonConvert.SerializeObject(ticketClass, new JsonSerializerSettings
-            {
-                DateFormatString = DateFormatString
-            });
-
-            var res = await request.PostStringAsync(json).ReceiveJson<ResponseModels.TicketClass>();
-           
-            return res;
-        }
-
-
-        public async Task<ResponseModels.StructuredContent> CreateStructuredContent(long eventId, RequestModels.StructuredContent content)
-        {
-            var request = BuildRequest($"events/{eventId}/structured_content/", ContentTypeJson);
-           
-            var res = await request.PostJsonAsync(content).ReceiveJson<ResponseModels.StructuredContent>();
-
-            return res;
-        }
-
-
-        public async Task<ResponseModels.StructuredContent> CreateStructuredDigitalContent(long eventId, RequestModels.StructuredDigitalContent content)
-        {
-            var request = BuildRequest($"events/{eventId}/structured_content/", ContentTypeJson);
-
-            var json = JsonConvert.SerializeObject(content);
-            var res = await request.PostStringAsync(json).ReceiveJson<ResponseModels.StructuredContent>();
-
-            return res;
-        }
-
-
-
-        public async Task<ResponseModels.Event> CreateEvent(RequestModels.Event @event)
+        public async Task<Event> CreateEvent(RequestModels.Event @event)
         {
             var request = BuildRequest($"organizations/{OrganizationId}/events/", ContentTypeJson);
 
@@ -110,7 +79,48 @@ namespace DangEasy.Eventbrite.Services
                 DateFormatString = DateFormatString
             });
 
-            var res = await request.PostStringAsync(json).ReceiveJson<ResponseModels.Event>();
+            var res = await request.PostStringAsync(json).ReceiveJson<Event>();
+
+            return res;
+        }
+
+
+
+        public async Task<StructuredContentPaginated> CreateStructuredContent(long eventId, RequestModels.StructuredContent content)
+        {
+            var current = await GetStructuredContent(eventId);
+
+            var request = BuildRequest($"events/{eventId}/structured_content/{current.PageVersionNumber ?? 1}/", ContentTypeJson);
+
+            var res = await request.PostJsonAsync(content).ReceiveJson<StructuredContentPaginated>();
+
+            return res;
+        }
+
+
+        public async Task<StructuredDigitalContentPaginated> CreateStructuredDigitalContent(long eventId, RequestModels.StructuredDigitalContent content)
+        {
+            var current = await GetStructuredDigitalContent(eventId);
+
+            var request = BuildRequest($"events/{eventId}/structured_content/{current.PageVersionNumber ?? 1}/", ContentTypeJson);
+
+            var json = JsonConvert.SerializeObject(content);
+            var res = await request.PostStringAsync(json).ReceiveJson<StructuredDigitalContentPaginated>();
+
+            return res;
+        }
+
+
+        public async Task<TicketClass> CreateTicketClass(long eventId, RequestModels.TicketClass ticketClass)
+        {
+            var request = BuildRequest($"events/{eventId}/ticket_classes/", ContentTypeJson);
+
+            var json = JsonConvert.SerializeObject(ticketClass, new JsonSerializerSettings
+            {
+                DateFormatString = DateFormatString
+            });
+
+            var res = await request.PostStringAsync(json).ReceiveJson<TicketClass>();
 
             return res;
         }
@@ -126,71 +136,82 @@ namespace DangEasy.Eventbrite.Services
         }
 
 
-        public async Task<ResponseModels.Event> DuplicateEvent(long eventId)
+        public async Task<Event> CopyEvent(long eventId)
         {
-            var request = BuildRequest($"{eventId}/copy/", ContentTypeJson);
+            var request = BuildRequest($"events/{eventId}/copy/", ContentTypeJson);
 
             //var res = await request.PostStringAsync("").ReceiveJson();
             //return long.Parse(res.id);
 
-            var res = await request.GetAsync().ReceiveJson<ResponseModels.Event>();
+            var res = await request.PostAsync().ReceiveJson<Event>();
             return res;
         }
 
 
-        public async Task<ResponseModels.Event> GetEvent(long eventId)
+        public async Task<Event> GetEvent(long eventId)
         {
             var request = BuildRequest($"events/{eventId}/");
 
-            var res = await request.GetAsync().ReceiveJson<ResponseModels.Event>();
+            var res = await request.GetAsync().ReceiveJson<Event>();
 
             return res;
         }
 
 
-        public async Task<ResponseModels.StructuredContent> GetStructuredContent(long eventId, string purpose)
+        public async Task<EventPaginated> GetEvents(long organizationId)
+        {
+            var request = BuildRequest($"organizations/{organizationId}/events/", ContentTypeJson);
+
+            var res = await request.GetJsonAsync<EventPaginated>();
+
+            return res;
+        }
+
+        public async Task<StructuredContentPaginated> GetStructuredContent(long eventId)
         {
             var request = BuildRequest($"events/{eventId}/structured_content/");
-            request.SetQueryParam("purpose", purpose);
+            request.SetQueryParam("purpose", RequestConstants.StructuredContent.Purpose);
 
-            var res = await request.GetJsonAsync<ResponseModels.StructuredContent>();
+            var res = await request.GetJsonAsync<StructuredContentPaginated>();
+
+            // dynamic res = await request.GetJsonAsync();
 
             return res;
         }
 
 
-        public async Task<ResponseModels.StructuredDigitalContent> GetStructuredDigitalContent(long eventId, string purpose)
+        public async Task<StructuredDigitalContentPaginated> GetStructuredDigitalContent(long eventId)
         {
             var request = BuildRequest($"events/{eventId}/structured_content/");
-            request.SetQueryParam("purpose", purpose);
+            request.SetQueryParam("purpose", RequestConstants.StructuredDigitalContent.Purpose);
 
-            ResponseModels.StructuredDigitalContent res;
+            StructuredDigitalContentPaginated res;
 
             try
             {
-                res = await request.GetJsonAsync<ResponseModels.StructuredDigitalContent>();
+                res = await request.GetJsonAsync<StructuredDigitalContentPaginated>();
                 return res;
             }
-            catch (Exception ex)
+            catch (FlurlHttpException ex)
             {
-                if (ex.Message.Contains("404"))
+                // API does not behave the same when it comes to purpose = digital_content!!!!
+                var error = await ex.GetResponseJsonAsync<Error>();
+
+                if (error.StatusCode == "404")
                 {
-                    return new ResponseModels.StructuredDigitalContent();
+                    return new StructuredDigitalContentPaginated();
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
         }
 
 
-        public async Task<ResponseModels.Paginated.TicketClassPaginated> GetTicketClasses(long eventId)
+        public async Task<TicketClassPaginated> GetTicketClasses(long eventId)
         {
             var request = BuildRequest($"events/{eventId}/ticket_classes/");
 
-            var res = await request.GetJsonAsync<ResponseModels.Paginated.TicketClassPaginated>();
+            var res = await request.GetJsonAsync<TicketClassPaginated>();
 
             return res;
         }
@@ -214,17 +235,17 @@ namespace DangEasy.Eventbrite.Services
         }
 
 
-        public async Task<ResponseModels.Organization> GetOrganization(long id)
+        public async Task<Organization> GetOrganization(long id)
         {
             var request = BuildRequest($"users/me/organizations/", ContentTypeJson);
 
-            var res = await request.GetAsync().ReceiveJson<ResponseModels.Paginated.OrganizationPaginated>();
+            var res = await request.GetAsync().ReceiveJson<OrganizationPaginated>();
 
             return id != 0 ? res.Organizations.First(x => x.Id == id) : res.Organizations.First();
         }
 
 
-        public async Task<ResponseModels.Event> UpdateEvent(long eventId, RequestModels.Event @event)
+        public async Task<Event> UpdateEvent(long eventId, RequestModels.Event @event)
         {
             var request = BuildRequest($"events/{eventId}/", ContentTypeJson);
 
@@ -233,10 +254,11 @@ namespace DangEasy.Eventbrite.Services
                 DateFormatString = DateFormatString
             });
 
-            var res = await request.PostStringAsync(json).ReceiveJson<ResponseModels.Event>();
+            var res = await request.PostStringAsync(json).ReceiveJson<Event>();
 
             return res;
         }
+
 
 
         #region private
@@ -252,6 +274,8 @@ namespace DangEasy.Eventbrite.Services
 
             return request;
         }
+
+
 
         #endregion
     }

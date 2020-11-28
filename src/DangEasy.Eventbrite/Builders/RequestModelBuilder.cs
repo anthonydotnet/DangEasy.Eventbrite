@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DangEasy.Eventbrite.Constants;
 using DangEasy.Eventbrite.Models.Request;
 
 namespace DangEasy.Eventbrite.Builders
@@ -26,11 +27,11 @@ namespace DangEasy.Eventbrite.Builders
         }
 
 
-        public static StructuredContent BuildStructuredContent(string type, string title, bool publish = true)
+        public static StructuredContent BuildStructuredContentText(string text, bool publish = true)
         {
             var model = new StructuredContent
             {
-                Purpose = Constants.Constants.StructuredContent.Purpose,
+                Purpose = Request.StructuredContent.Purpose,
                 Modules = new List<Module>
                 {
                     {
@@ -40,10 +41,10 @@ namespace DangEasy.Eventbrite.Builders
                             {
                                 Body = new Body
                                 {
-                                    Text = title
+                                    Text = text
                                 }
                             },
-                            Type = type // "text"
+                            Type = Request.StructuredContent.Text
                         }
                     }
                 },
@@ -60,7 +61,7 @@ namespace DangEasy.Eventbrite.Builders
 
             var model = new StructuredDigitalContent
             {
-                Purpose = Constants.Constants.StructuredDigitalContent.Purpose,
+                Purpose = Request.StructuredDigitalContent.Purpose,
                 Modules = new List<DigitalModule>
                 {
                     {
@@ -68,7 +69,7 @@ namespace DangEasy.Eventbrite.Builders
                         {
                             Data = new DigitalContentData
                             {
-                                Body = new DigitalContentBody
+                                LiveStreamUrl = new LiveStreamContentBody
                                 {
                                     Text = title,
                                     Url = url
@@ -83,5 +84,22 @@ namespace DangEasy.Eventbrite.Builders
 
             return model;
         }
+
+
+        public static TicketClass BuildTicketClass(string name, int capacity, List<string> deliveryMethods, DateTime ? salesStartUtc = null, DateTime ?salesEndUtc = null, bool isFree = true)
+        {
+            var model = new TicketClass
+            {
+                Name = name,
+                Capacity = capacity,
+                DeliveryMethods = deliveryMethods,
+                Free = isFree,
+                SalesStartUtc = salesStartUtc,
+                SalesEndUtc = salesEndUtc
+            };
+
+            return model;
+        }
+
     }
 }

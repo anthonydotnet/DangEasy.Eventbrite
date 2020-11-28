@@ -24,7 +24,6 @@ namespace DangEasy.Eventbrite.Models.Response
         [JsonProperty("sales_end")]
         public DateTime SalesEnd { get; set; }
 
-
         [JsonProperty("free")]
         public bool Free { get; set; }
 

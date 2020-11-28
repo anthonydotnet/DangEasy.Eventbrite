@@ -48,6 +48,7 @@ namespace DangEasy.Eventbrite.Models.Response
         [JsonProperty("online_event")]
         public bool OnlineEvent { get; set; }
 
+        // these need to be strings because the mock server  returns empty string :(
         [JsonProperty("organization_id")]
         public string OrganizationId { get; set; }
 

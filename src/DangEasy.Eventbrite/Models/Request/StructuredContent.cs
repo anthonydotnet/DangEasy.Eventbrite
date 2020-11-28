@@ -5,8 +5,8 @@ namespace DangEasy.Eventbrite.Models.Request
 {
     public class StructuredContent
     {
-        public const string Listing = "listing";
-        public const string DigitalContent = "digital_content";
+        //public const string Listing = "listing";
+        //public const string DigitalContent = "digital_content";
 
         [JsonProperty("modules")]
         public List<Module> Modules { get; set; }

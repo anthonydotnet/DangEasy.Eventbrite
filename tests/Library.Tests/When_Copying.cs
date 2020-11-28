@@ -1,15 +1,15 @@
-using System;
+﻿using System;
 using Xunit;
 using System.Threading.Tasks;
 
-namespace Eventbrite.Test.Integration
+namespace Library.Tests
 {
-    public class When_Copying_Event : BaseEventSetup, IDisposable
+    public class When_Copying : BaseEventSetup, IDisposable
     {
         [Fact]
         public async Task Event_Is_Copied()
         {
-            var res = await _service.DuplicateEvent(Event.Id);
+            var res = await Service.CopyEvent(Event.Id);
 
             Assert.True(res.Id > 0);
         }

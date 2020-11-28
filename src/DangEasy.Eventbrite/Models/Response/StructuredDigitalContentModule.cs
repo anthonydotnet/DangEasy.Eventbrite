@@ -1,28 +1,17 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace DangEasy.Eventbrite.Models.Request
+namespace DangEasy.Eventbrite.Models.Response
 {
-    public class StructuredDigitalContent
-    {       
-        [JsonProperty("modules")]
-        public List<DigitalModule> Modules { get; set; }
-
-        [JsonProperty("publish")]
-        public bool Publish { get; set; }
-
-        [JsonProperty("purpose")]
-        public string Purpose { get; set; } // listing / digital_content
-    }
-
-
-    public class DigitalModule
+    public class StructuredDigitalContentModule
     {
         [JsonProperty("type")]
         public string Type { get; set; }
 
         [JsonProperty("data")]
         public DigitalContentData Data { get; set; }
+
+        [JsonProperty("purpose")]
+        public string Purpose { get; set; }
     }
 
 
@@ -41,4 +30,3 @@ namespace DangEasy.Eventbrite.Models.Request
         public string Url { get; set; }
     }
 }
-

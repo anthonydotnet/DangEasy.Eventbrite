@@ -1,11 +1,13 @@
 ﻿namespace DangEasy.Eventbrite.Constants
 {
-    public class Constants
+    public class Request
     {
         public static class StructuredContent
         {
             public const string Purpose = "listing";
             public const string Text = "text";
+            public const string Image = "image";
+            public const string Video = "video";
         }
 
         public static class StructuredDigitalContent

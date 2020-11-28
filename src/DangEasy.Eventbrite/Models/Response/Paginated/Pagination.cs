@@ -16,10 +16,10 @@ namespace DangEasy.Eventbrite.Models.Response.Paginated
         [JsonProperty("page_count")]
         public int PageCount { get; set; }
 
-        [JsonProperty("continuation")]
-        public string Continuation { get; set; }
+        //[JsonProperty("continuation")]
+        //public string Continuation { get; set; }
 
-        [JsonProperty("has_more_items")]
-        public bool HasMoreItems { get; set; }
+        //[JsonProperty("has_more_items")]
+        //public bool HasMoreItems { get; set; }
     }
 }
