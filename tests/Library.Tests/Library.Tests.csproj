@@ -30,4 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\DangEasy.Eventbrite\DangEasy.Eventbrite.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@ using Xunit;
 using DangEasy.Eventbrite.Models.Request;
 using System.Collections.Generic;
 using DangEasy.Eventbrite.Builders;
+using Library.Tests.Extensions;
 
 namespace Library.Tests
 {
@@ -22,8 +23,27 @@ namespace Library.Tests
         }
 
 
-
         [Fact]
+        public void Event_Is_Updated()
+        {
+            // setup
+            var updatedStartUtc = Event.Start.Utc.AddHours(1);
+            var updatedEndUtc = Event.End.Utc.AddHours(1);
+
+            var @event = RequestModelBuilder.BuildEvent("New Title", updatedStartUtc, updatedEndUtc, "Australia/Sydney", "AUD");
+
+            var res = Service.UpdateEvent(Event.Id, @event).Result;
+
+            Assert.NotEmpty(res.Name.Text);
+            Assert.True(res.Start.Utc > DateTime.MinValue);
+            Assert.True(res.End.Utc > DateTime.MinValue);
+            Assert.NotEmpty( res.Start.Timezone);
+            Assert.NotEmpty( res.End.Timezone);
+            Assert.NotEmpty( res.Currency);
+        }
+
+
+        [FactSkipWhenMockApi] // organisationId is empty string :(
         public void Event_Details_Are_Updated()
         {
             // setup
@@ -46,7 +66,7 @@ namespace Library.Tests
         }
 
 
-        [Fact]
+        [FactSkipWhenMockApi] // ticket class sales_start is null :(
         public void Event_Publishing_Succeeds()
         {
             var ticketClass = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { "electronic" });
@@ -59,7 +79,7 @@ namespace Library.Tests
         }
 
 
-        [Fact]
+        [FactSkipWhenMockApi] // ticket class sales_start is null :(
         public void Event_Unpublishing_Succeeds()
         {
             var ticketClass = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { "electronic" });

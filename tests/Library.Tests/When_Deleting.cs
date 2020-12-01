@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using Library.Tests.Extensions;
 using Xunit;
 
 namespace Library.Tests
@@ -13,43 +13,21 @@ namespace Library.Tests
         }
 
 
-        [FactDebugOnly]
-        public void DebugOnly_Events_Are_Deleted()
-        {
-            var res = Service.GetEvents(Service.OrganizationId).Result;
+       // [FactDebugOnly]
+        //public void DebugOnly_Events_Are_Deleted()
+        //{
+        //    var res = Service.GetEvents(Service.OrganizationId).Result;
 
-            foreach (var e in res.Events)
-            {
-                Service.DeleteEvent(e.Id);
-            }
-        }
+        //    foreach (var e in res.Events)
+        //    {
+        //        Service.DeleteEvent(e.Id);
+        //    }
+        //}
 
-        public override void Dispose()
-        {
-            // override deletion in base class
-        }
+        //public override void Dispose()
+        //{
+        //    // override deletion in base class - do nothing 
+        //}
     }
 
-
-    public class FactDebugOnlyAttribute : FactAttribute
-    {
-        public FactDebugOnlyAttribute()
-        {
-            if (!Debugger.IsAttached)
-            {
-                Skip = "Runs in debug mode only";
-            }
-        }
-    }
-
-    public class TheoryDebugOnlyAttribute : TheoryAttribute
-    {
-        public TheoryDebugOnlyAttribute()
-        {
-            if (!Debugger.IsAttached)
-            {
-                Skip = "Runs in debug mode only";
-            }
-        }
-    }
 }

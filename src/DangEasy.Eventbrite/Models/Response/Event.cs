@@ -50,10 +50,10 @@ namespace DangEasy.Eventbrite.Models.Response
 
         // these need to be strings because the mock server  returns empty string :(
         [JsonProperty("organization_id")]
-        public string OrganizationId { get; set; }
+        public long OrganizationId { get; set; }
 
         [JsonProperty("organizer_id")]
-        public string OrganizerId { get; set; }
+        public long OrganizerId { get; set; }
 
         //organizer
         //logo_id

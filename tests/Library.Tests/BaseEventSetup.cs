@@ -5,6 +5,7 @@ using Xunit;
 using DangEasy.Configuration;
 using Microsoft.Extensions.Configuration;
 using DangEasy.Eventbrite.Builders;
+using DangEasy.Eventbrite.Models.Shared;
 
 namespace Library.Tests
 {
@@ -43,9 +44,11 @@ namespace Library.Tests
 
         public virtual void Dispose()
         {
+            System.Console.WriteLine("Cleanup");
             var res = Service.DeleteEvent(Event.Id).Result;
 
             Assert.True(res);
+            System.Console.WriteLine("Done");
         }
 
 
@@ -57,7 +60,21 @@ namespace Library.Tests
 
             var @event = RequestModelBuilder.BuildEvent(Data_Title, Data_StartUtc, Data_EndUtc, Data_Timezone, Data_Currency);
 
-            Event = Service.CreateEvent(@event).Result;
+
+            if (ApiUrl.Contains("mock"))
+            {
+                // mock api returns incomplete objects :(
+                Event = new Event()
+                {
+                    OrganizationId = 1234567890,
+                    Start = new EventDate { Utc = Data_StartUtc, Timezone = Data_Timezone },
+                    End = new EventDate { Utc = Data_EndUtc, Timezone = Data_Timezone },
+                };
+            }
+            else
+            {
+                Event = Service.CreateEvent(@event).Result;
+            }
 
             return Event;
         }
