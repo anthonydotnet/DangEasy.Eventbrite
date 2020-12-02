@@ -16,10 +16,10 @@ namespace DangEasy.Eventbrite.Models.Request
         //public TextHtml Description { get; set; }
 
         [JsonProperty("event.start.utc")]
-        public DateTime Start { get; set; }
+        public DateTime StartUtc { get; set; }
 
         [JsonProperty("event.end.utc")]
-        public DateTime End { get; set; }
+        public DateTime EndUtc { get; set; }
 
         [JsonProperty("event.start.timezone")]
         public string StartTimezone { get; set; }

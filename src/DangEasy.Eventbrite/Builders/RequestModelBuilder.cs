@@ -13,8 +13,8 @@ namespace DangEasy.Eventbrite.Builders
             var model = new Event
             {
                 Name = title,
-                Start = startUtc,
-                End = endUtc,
+                StartUtc = startUtc,
+                EndUtc = endUtc,
                 StartTimezone = timezone,
                 EndTimezone = timezone,
                 Currency = currency,
