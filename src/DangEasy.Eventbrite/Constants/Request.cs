@@ -15,5 +15,12 @@
             public const string LiveStream = "livestream";
             public const string Purpose = "digital_content";
         }
+
+
+        public static class TicketClass
+        {
+            public const string DeliveryMethodElectronic = "electronic";
+        }
+        
     }
 }

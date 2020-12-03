@@ -1,15 +1,15 @@
 ﻿using System;
 using Xunit;
-using System.Threading.Tasks;
+using Library.Tests.Extensions;
 
 namespace Library.Tests
 {
     public class When_Copying : BaseEventSetup, IDisposable
     {
-        [Fact]
-        public async Task Event_Is_Copied()
+        [FactSkipWhenMockApi]
+        public void Event_Is_Copied()
         {
-            var res = await Service.CopyEvent(Event.Id);
+            var res = Service.CopyEvent(Event.Id).Result;
 
             Assert.True(res.Id > 0);
         }

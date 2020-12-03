@@ -23,7 +23,7 @@ namespace Library.Tests
         }
 
 
-        [Fact]
+        [FactSkipWhenMockApi] // organisationId is empty string :(
         public void Event_Is_Updated()
         {
             // setup

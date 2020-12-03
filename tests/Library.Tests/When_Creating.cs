@@ -19,7 +19,7 @@ namespace Library.Tests
         }
 
 
-        [FactSkipWhenMockApi]
+        [FactSkipWhenMockApi] // Various properties are null - eg. Name
         public void Event_Has_Values_Created()
         {
             var res = Event; // created in base class
@@ -38,10 +38,10 @@ namespace Library.Tests
         }
 
 
-        [Fact]
+        [FactSkipWhenMockApi] // Body.Text is empty string
         public void StructuredContent_Is_Created()
         {
-            var bodyText = ApiUrl.Contains("apiary-mock") ? string.Empty : "My Text"; // hack - mock is incomplete
+            var bodyText = "My Text"; 
 
             var content = RequestModelBuilder.BuildStructuredContentText(bodyText);
             var res = Service.CreateStructuredContent(Event.Id, content).Result;
@@ -63,7 +63,7 @@ namespace Library.Tests
         [FactSkipWhenMockApi] // cannot bind LiveStreamUrl  :(
         public void StructuredDigitalContent_Has_Values_Created()
         {
-            var title = ApiUrl.Contains("apiary-mock") ? string.Empty : "My Text"; // hack - mock is incomplete
+            const string title = "My Text"; 
             const string videoLink = "https://us04web.zoom.us/j/1234567890";
 
             var content = RequestModelBuilder.BuildStructuredDigitalContent(Request.StructuredDigitalContent.LiveStream, title, videoLink);
@@ -81,25 +81,24 @@ namespace Library.Tests
             var salesStartUtc = executionStart.ToUniversalTime();
             var salesEndUtc = salesStartUtc.AddHours(1).ToUniversalTime();
 
-            var model = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { "electronic" }, salesStartUtc, salesEndUtc, true);
+            var model = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { Request.TicketClass.DeliveryMethodElectronic }, salesStartUtc, salesEndUtc, true);
 
             var res = Service.CreateTicketClass(Event.Id, model).Result;
 
             Assert.Equal("General Admission", res.Name);
 
-            Assert.Equal(salesStartUtc.Date, res.SalesStart.Date);
-            Assert.Equal(salesStartUtc.Hour, res.SalesStart.Hour);
-            Assert.Equal(salesStartUtc.Minute, res.SalesStart.Minute); 
-            Assert.Equal(salesStartUtc.Second, res.SalesStart.Second);
+            Assert.Equal(salesStartUtc.Date, res.SalesStartUtc.Date);
+            Assert.Equal(salesStartUtc.Hour, res.SalesStartUtc.Hour);
+            Assert.Equal(salesStartUtc.Minute, res.SalesStartUtc.Minute); 
+            Assert.Equal(salesStartUtc.Second, res.SalesStartUtc.Second);
 
-            Assert.Equal(salesEndUtc.Date, res.SalesEnd.Date);
-            Assert.Equal(salesEndUtc.Hour, res.SalesEnd.Hour);
-            Assert.Equal(salesEndUtc.Minute, res.SalesEnd.Minute);
-            Assert.Equal(salesEndUtc.Second, res.SalesEnd.Second);
+            Assert.Equal(salesEndUtc.Date, res.SalesEndUtc.Date);
+            Assert.Equal(salesEndUtc.Hour, res.SalesEndUtc.Hour);
+            Assert.Equal(salesEndUtc.Minute, res.SalesEndUtc.Minute);
+            Assert.Equal(salesEndUtc.Second, res.SalesEndUtc.Second);
 
             Assert.True(res.Free);
             Assert.Equal(1, res.MinimumQuantity);
-            //Assert.Equal(3, res.MaximumQuantity);
             Assert.Equal(3, res.Capacity);
             Assert.Equal("electronic", res.DeliveryMethods[0]);
         }

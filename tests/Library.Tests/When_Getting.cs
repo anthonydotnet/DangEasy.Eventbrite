@@ -2,7 +2,6 @@
 using DangEasy.Eventbrite.Models.Request;
 using System;
 using DangEasy.Eventbrite.Builders;
-using System.Linq;
 using Library.Tests.Extensions;
 using DangEasy.Eventbrite.Constants;
 
@@ -20,8 +19,8 @@ namespace Library.Tests
             Assert.NotEmpty(res.Events);
         }
 
-
-        [Fact]
+         
+        [FactSkipWhenMockApi] // organisationId is empty string :(
         public void Event_Is_Retrieved()
         {
             var res = Service.GetEvent(Event.Id).Result;
@@ -34,7 +33,6 @@ namespace Library.Tests
         {
             var res = Service.GetStructuredContent(Event.Id).Result;
 
-            // Assert.Null(1, res.PageVersionNumber);
             Assert.Null(res.PageVersionNumber);
         }
 
@@ -61,6 +59,5 @@ namespace Library.Tests
 
             Assert.DoesNotContain(res.Modules, x => x.Purpose == Request.StructuredDigitalContent.Purpose);
         }
-
     }
 }

@@ -19,10 +19,10 @@ namespace DangEasy.Eventbrite.Models.Response
         //public string Description { get; set; }
 
         [JsonProperty("sales_start")]
-        public DateTime SalesStart { get; set; }
+        public DateTime SalesStartUtc { get; set; }
 
         [JsonProperty("sales_end")]
-        public DateTime SalesEnd { get; set; }
+        public DateTime SalesEndUtc { get; set; }
 
         [JsonProperty("free")]
         public bool Free { get; set; }

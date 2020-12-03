@@ -42,13 +42,12 @@ namespace Library.Tests
             ScaffoldEvent();
         }
 
+
         public virtual void Dispose()
         {
-            System.Console.WriteLine("Cleanup");
             var res = Service.DeleteEvent(Event.Id).Result;
 
             Assert.True(res);
-            System.Console.WriteLine("Done");
         }
 
 
@@ -59,7 +58,6 @@ namespace Library.Tests
             Data_EndUtc = Data_StartUtc.AddHours(1);
 
             var @event = RequestModelBuilder.BuildEvent(Data_Title, Data_StartUtc, Data_EndUtc, Data_Timezone, Data_Currency);
-
 
             if (ApiUrl.Contains("mock"))
             {
