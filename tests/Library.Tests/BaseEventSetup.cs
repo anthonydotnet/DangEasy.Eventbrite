@@ -20,7 +20,7 @@ namespace Library.Tests
         public Event Event; // scaffolded event
 
         // event test data
-        public DateTime Data_ExecutionStart;
+        public DateTime Data_ExecutionStartUtc;
         public DateTime Data_StartUtc;
         public DateTime Data_EndUtc;
         public string Data_Timezone = "Europe/London";
@@ -37,7 +37,7 @@ namespace Library.Tests
 
             Service = new EventbriteService(ApiUrl, Token);
 
-            Data_ExecutionStart = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, DateTime.UtcNow.Second, 0);
+            Data_ExecutionStartUtc = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, DateTime.UtcNow.Second, 0);
 
             ScaffoldEvent();
         }
@@ -54,7 +54,7 @@ namespace Library.Tests
 
         public Event ScaffoldEvent()
         {
-            Data_StartUtc = Data_ExecutionStart.AddHours(2);
+            Data_StartUtc = Data_ExecutionStartUtc.AddDays(1);
             Data_EndUtc = Data_StartUtc.AddHours(1);
 
             var @event = RequestModelBuilder.BuildEvent(Data_Title, Data_StartUtc, Data_EndUtc, Data_Timezone, Data_Currency);

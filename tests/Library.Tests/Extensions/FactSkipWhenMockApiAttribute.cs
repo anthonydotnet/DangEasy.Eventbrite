@@ -5,6 +5,9 @@ namespace Library.Tests.Extensions
 {
     public class FactSkipWhenMockApiAttribute : FactAttribute
     {
+        // Note: Due to seemingly a bug in xunit, we cannot use this attribute to skip tests for the mock endpoint
+        // See example here: https://youtu.be/kktHEB_9b7g
+
         public FactSkipWhenMockApiAttribute()
         {
             var config = new ConfigurationLoader().Load("appsettings.json", Directory.Bin);

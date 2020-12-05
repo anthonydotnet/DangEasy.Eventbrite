@@ -1,13 +1,12 @@
-﻿using System;
-using Library.Tests.Extensions;
+﻿using Library.Tests.Extensions;
 using Xunit;
 
 namespace Library.Tests
 {
-    public class When_Deleting : BaseEventSetup, IDisposable
+    public class When_Deleting : BaseEventSetup
     {
         [Fact]
-        public void Events_Is_Deleted()
+        public void Event_Is_Deleted()
         {
             Service.DeleteEvent(Event.Id);
         }

@@ -23,7 +23,7 @@ namespace Library.Tests
         }
 
 
-        [FactSkipWhenMockApi] // organisationId is empty string :(
+        [Fact] // organisationId is empty string :(
         public void Event_Is_Updated()
         {
             // setup
@@ -43,7 +43,7 @@ namespace Library.Tests
         }
 
 
-        [FactSkipWhenMockApi] // organisationId is empty string :(
+        [Fact] // organisationId is empty string :(
         public void Event_Details_Are_Updated()
         {
             // setup
@@ -66,7 +66,7 @@ namespace Library.Tests
         }
 
 
-        [FactSkipWhenMockApi] // ticket class sales_start is null :(
+        [Fact] // ticket class sales_start is null :(
         public void Event_Publishing_Succeeds()
         {
             var ticketClass = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { "electronic" });
@@ -79,7 +79,7 @@ namespace Library.Tests
         }
 
 
-        [FactSkipWhenMockApi] // ticket class sales_start is null :(
+        [Fact] // ticket class sales_start is null :(
         public void Event_Unpublishing_Succeeds()
         {
             var ticketClass = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { "electronic" });

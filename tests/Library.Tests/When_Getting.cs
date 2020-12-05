@@ -9,31 +9,13 @@ namespace Library.Tests
 {
     public class When_Getting : BaseEventSetup, IDisposable
     {
-        [FactSkipWhenMockApi]
-        public void Events_Are_Retrieved()
-        {
-            var orgId = Event.OrganizationId;
-
-            var res = Service.GetEvents(orgId).Result;
-
-            Assert.NotEmpty(res.Events);
-        }
-
-         
-        [FactSkipWhenMockApi] // organisationId is empty string :(
-        public void Event_Is_Retrieved()
-        {
-            var res = Service.GetEvent(Event.Id).Result;
-
-            Assert.True(res.Id > 1);
-        }
-
         [Fact]
         public void StructuredContent_Is_Not_Retrieved()
         {
             var res = Service.GetStructuredContent(Event.Id).Result;
 
-            Assert.Null(res.PageVersionNumber);
+            Assert.Equal(1, res.PageVersionNumber);
+            Assert.Empty(res.Modules);
         }
 
 
@@ -57,7 +39,42 @@ namespace Library.Tests
         {
             var res = Service.GetStructuredDigitalContent(Event.Id).Result;
 
-            Assert.DoesNotContain(res.Modules, x => x.Purpose == Request.StructuredDigitalContent.Purpose);
+            Assert.Null(res.Modules); // yes it is null for digital content :(
+        }
+
+
+        [Fact]
+        public void StructuredDigitalContent_Is_Retrieved()
+        {
+            const string title = "My Text";
+            const string videoLink = "https://us04web.zoom.us/j/1234567890";
+            var content = RequestModelBuilder.BuildStructuredDigitalContent(Request.StructuredDigitalContent.LiveStream, title, videoLink);
+            _ = Service.CreateStructuredDigitalContent(Event.Id, content).Result;
+
+            var res = Service.GetStructuredDigitalContent(Event.Id).Result;
+
+            Assert.Equal(title, res.Modules[0].Data.LiveStreamUrl.Text);
+            Assert.Equal(videoLink, res.Modules[0].Data.LiveStreamUrl.Url);
+        }
+
+
+        [Fact] // organisationId is empty string :(
+        public void Events_Are_Retrieved()
+        {
+            var orgId = Event.OrganizationId;
+
+            var res = Service.GetEvents(orgId).Result;
+
+            Assert.NotEmpty(res.Events);
+        }
+
+
+        [Fact] // organisationId is empty string :(
+        public void Event_Is_Retrieved()
+        {
+            var res = Service.GetEvent(Event.Id).Result;
+
+            Assert.True(res.Id > 1);
         }
     }
 }

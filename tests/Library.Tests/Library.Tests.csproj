@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="appsettings.json" />
   </ItemGroup>
   <ItemGroup>
@@ -29,8 +32,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\DangEasy.Eventbrite\DangEasy.Eventbrite.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>
