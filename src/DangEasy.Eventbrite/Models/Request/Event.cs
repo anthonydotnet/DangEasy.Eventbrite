@@ -9,8 +9,6 @@ namespace DangEasy.Eventbrite.Models.Request
         [JsonProperty("event.name.html")]
         public string Name { get; set; }
 
-        [JsonProperty("event.summary")]
-        public string Summary { get; set; }
 
         //[JsonProperty("description")]
         //public TextHtml Description { get; set; }
@@ -34,18 +32,12 @@ namespace DangEasy.Eventbrite.Models.Request
         [JsonProperty("event.online_event")]
         public bool OnlineEvent { get; set; }
 
-        [JsonProperty("event.organizer_id")]
-        public string Organizer_id { get; set; }
-
-
-        //logo_id
         //venue_id
         //category_id
         //subcategory_id
 
         [JsonProperty("event.listed")]
         public bool Listed { get; set; }
-
 
         [JsonProperty("event.shareable")]
         public bool Shareable { get; set; }

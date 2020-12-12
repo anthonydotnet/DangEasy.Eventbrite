@@ -56,7 +56,12 @@ namespace DangEasy.Eventbrite.Models.Response
         public long OrganizerId { get; set; }
 
         //organizer
+
         //logo_id
+        [JsonProperty("logo_id")]
+        public long ? LogoId { get; set; }
+
+
         //logo
         //venue_id
         //format_id

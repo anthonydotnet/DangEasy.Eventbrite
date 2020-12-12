@@ -29,7 +29,7 @@ namespace Library.Tests
         }
 
 
-        [Fact] // sales_start is null :(
+        [FactSkipWhenMockApiAttribute] // sales_start is null :(
         public void TicketClass_Has_Default_Dates_Created()
         {
             var expected_salesStartUtc = Data_ExecutionStartUtc;

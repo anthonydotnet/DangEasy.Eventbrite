@@ -34,8 +34,7 @@ namespace DangEasy.Eventbrite.Services
         Task<bool> UnPublishEvent(long eventId);
 
         Task<Event> UpdateEvent(long eventId, RequestModels.Event @event);
-
-        
+        Task<Event> UpdateEvent(long eventId, string property, string value);
     }
 
 
@@ -253,6 +252,21 @@ namespace DangEasy.Eventbrite.Services
             {
                 DateFormatString = DateFormatString
             });
+
+            var res = await request.PostStringAsync(json).ReceiveJson<Event>();
+
+            return res;
+        }
+
+
+        // usage eg... property: "event.logo_id", value "1234567890"
+        public async Task<Event> UpdateEvent(long eventId, string property, string value)
+        {
+            var request = BuildRequest($"events/{eventId}/", ContentTypeJson);
+
+            // this is a bit of a hack :(
+            var json = $"\"{property}\": \"{value}\"";
+            json = "{" + json + "}";
 
             var res = await request.PostStringAsync(json).ReceiveJson<Event>();
 

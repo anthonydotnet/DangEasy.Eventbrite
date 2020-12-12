@@ -57,7 +57,7 @@ namespace Library.Tests
             Data_StartUtc = Data_ExecutionStartUtc.AddDays(1);
             Data_EndUtc = Data_StartUtc.AddHours(1);
 
-            var @event = RequestModelBuilder.BuildEvent(Data_Title, Data_StartUtc, Data_EndUtc, Data_Timezone, Data_Currency);
+            var @event = RequestModelBuilder.BuildEvent(Data_Title, Data_StartUtc, Data_EndUtc, Data_Timezone, Data_Currency);          
 
             if (ApiUrl.Contains("mock"))
             {

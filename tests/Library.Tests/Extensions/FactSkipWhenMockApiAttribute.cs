@@ -12,7 +12,7 @@ namespace Library.Tests.Extensions
         {
             var config = new ConfigurationLoader().Load("appsettings.json", Directory.Bin);
 
-            if (config["Eventbrite_ApiUrl"].Contains("mock"))
+            if (config["Values:Eventbrite_ApiUrl"].Contains("mock"))
             {
                 Skip = "Skip when using mock API. Only works on proxy API.";
             }

@@ -43,6 +43,19 @@ namespace Library.Tests
         }
 
 
+
+        [Fact] // organisationId is empty string :(
+        public void Event_Property_Is_Updated()
+        {
+            const long logoId = 120775453;
+
+            var res = Service.UpdateEvent(Event.Id, "event.logo_id", logoId.ToString()).Result;
+
+            Assert.Equal(logoId, res.LogoId);
+        }
+
+
+
         [Fact] // organisationId is empty string :(
         public void Event_Details_Are_Updated()
         {

@@ -19,7 +19,7 @@ namespace Library.Tests
 
             foreach (var e in res.Events)
             {
-                Service.DeleteEvent(e.Id);
+                _ = Service.DeleteEvent(e.Id).Result;
             }
         }
 
