@@ -1,5 +1,4 @@
-﻿using Library.Tests.Extensions;
-using Xunit;
+﻿using Xunit;
 
 namespace Library.Tests
 {
@@ -8,7 +7,9 @@ namespace Library.Tests
         [Fact]
         public void Event_Is_Cancelled()
         {
-            Service.CancelEvent(Event.Id);
+            var res = Service.CancelEvent(Event.Id).Result;
+
+            Assert.True(res.Canceled);
         }
     }
 }

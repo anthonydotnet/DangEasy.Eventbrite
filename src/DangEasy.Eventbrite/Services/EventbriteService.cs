@@ -14,7 +14,7 @@ namespace DangEasy.Eventbrite.Services
     {
         long OrganizationId { get; }
 
-        Task<Event> CancelEvent(long eventId);
+        Task<EventCancelled> CancelEvent(long eventId);
         Task<Event> CopyEvent(long eventId);
         Task<Event> CreateEvent(RequestModels.Event @event);
         Task<StructuredContentPaginated> CreateStructuredContent(long eventId, RequestModels.StructuredContent content);
@@ -71,11 +71,11 @@ namespace DangEasy.Eventbrite.Services
 
 
 
-        public async Task<Event> CancelEvent(long eventId)
+        public async Task<EventCancelled> CancelEvent(long eventId)
         {
             var request = BuildRequest($"events/{eventId}/cancel/", ContentTypeJson);
 
-            var res = await request.PostAsync().ReceiveJson<Event>();
+            var res = await request.PostAsync().ReceiveJson<EventCancelled>();
             return res;
         }
 
