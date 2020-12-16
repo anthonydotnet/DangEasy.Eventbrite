@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageVersion>0.4.0</PackageVersion>
+    <PackageVersion>0.5.0</PackageVersion>
     <Authors>Anthony Dang</Authors>
     <Copyright>Anthony Dang</Copyright>
     <PackageLicenseUrl>https://raw.githubusercontent.com/anthonydotnet/dangeasy-eventbrite/main/LICENSE</PackageLicenseUrl>

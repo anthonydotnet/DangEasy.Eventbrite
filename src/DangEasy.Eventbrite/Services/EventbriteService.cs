@@ -14,14 +14,15 @@ namespace DangEasy.Eventbrite.Services
     {
         long OrganizationId { get; }
 
+        Task<Event> CancelEvent(long eventId);
+        Task<Event> CopyEvent(long eventId);
+        Task<Event> CreateEvent(RequestModels.Event @event);
         Task<StructuredContentPaginated> CreateStructuredContent(long eventId, RequestModels.StructuredContent content);
         Task<StructuredDigitalContentPaginated> CreateStructuredDigitalContent(long eventId, RequestModels.StructuredDigitalContent content);
-        Task<Event> CreateEvent(RequestModels.Event @event);
         Task<TicketClass> CreateTicketClass(long eventId, RequestModels.TicketClass ticketClass);
 
         Task<bool> DeleteEvent(long eventId);
 
-        Task<Event> CopyEvent(long eventId);
         Task<Event> GetEvent(long eventId);
         Task<EventPaginated> GetEvents(long organizationId);
         Task<Organization> GetOrganization(long id);
@@ -66,6 +67,26 @@ namespace DangEasy.Eventbrite.Services
             _baseUrl = apiUrl;
             _bearerToken = bearerToken;
             _organizationId = organizationId;
+        }
+
+
+
+        public async Task<Event> CancelEvent(long eventId)
+        {
+            var request = BuildRequest($"events/{eventId}/cancel/", ContentTypeJson);
+
+            var res = await request.PostAsync().ReceiveJson<Event>();
+            return res;
+        }
+
+
+
+        public async Task<Event> CopyEvent(long eventId)
+        {
+            var request = BuildRequest($"events/{eventId}/copy/", ContentTypeJson);
+
+            var res = await request.PostAsync().ReceiveJson<Event>();
+            return res;
         }
 
 
@@ -135,18 +156,6 @@ namespace DangEasy.Eventbrite.Services
         }
 
 
-        public async Task<Event> CopyEvent(long eventId)
-        {
-            var request = BuildRequest($"events/{eventId}/copy/", ContentTypeJson);
-
-            //var res = await request.PostStringAsync("").ReceiveJson();
-            //return long.Parse(res.id);
-
-            var res = await request.PostAsync().ReceiveJson<Event>();
-            return res;
-        }
-
-
         public async Task<Event> GetEvent(long eventId)
         {
             var request = BuildRequest($"events/{eventId}/");
@@ -172,8 +181,6 @@ namespace DangEasy.Eventbrite.Services
             request.SetQueryParam("purpose", RequestConstants.StructuredContent.Purpose);
 
             var res = await request.GetJsonAsync<StructuredContentPaginated>();
-
-            // dynamic res = await request.GetJsonAsync();
 
             return res;
         }
