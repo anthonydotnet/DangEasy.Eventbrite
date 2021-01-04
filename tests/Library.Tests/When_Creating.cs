@@ -16,6 +16,16 @@ namespace Library.Tests
             var res = Event; // created in base class
 
             Assert.NotNull(res);
+
+            Assert.Equal(Data_StartUtc.Date, res.Start.Utc.Date);
+            Assert.Equal(Data_StartUtc.Hour, res.Start.Utc.Hour);
+            Assert.Equal(Data_StartUtc.Minute, res.Start.Utc.Minute);
+            Assert.Equal(Data_StartUtc.Second, res.Start.Utc.Second);
+
+            Assert.Equal(Data_StartLocal.Date, res.Start.Local.Date);
+            Assert.Equal(Data_StartLocal.Hour, res.Start.Local.Hour);
+            Assert.Equal(Data_StartLocal.Minute, res.Start.Local.Minute);
+            Assert.Equal(Data_StartLocal.Second, res.Start.Local.Second);
         }
 
 
@@ -96,12 +106,15 @@ namespace Library.Tests
             var res = Event; // created in base class
 
             Assert.Equal(Data_Title, res.Name.Text);
-            Assert.Equal(Data_StartUtc, res.Start.Local);
-            Assert.Equal(Data_EndUtc, res.End.Local);
-            Assert.Equal(Data_Timezone, res.Start.Timezone);
-            Assert.Equal(Data_Timezone, res.End.Timezone);
+            Assert.Equal(Data_StartLocal.Date, res.Start.Local.Date);
+            Assert.Equal(Data_StartLocal.Hour, res.Start.Local.Hour);
+            Assert.Equal(Data_StartLocal.Minute, res.Start.Local.Minute);
+
             Assert.Equal(Data_StartUtc, res.Start.Utc);
             Assert.Equal(Data_EndUtc, res.End.Utc);
+
+            Assert.Equal(Data_Timezone, res.Start.Timezone);
+            Assert.Equal(Data_Timezone, res.End.Timezone);
             Assert.Equal(Data_Currency, res.Currency);
             Assert.True(res.OnlineEvent);
             Assert.True(res.Listed);
