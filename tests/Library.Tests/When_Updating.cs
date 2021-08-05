@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xunit;
 using DangEasy.Eventbrite.Models.Request;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace Library.Tests
         }
 
 
-        [Fact] // organisationId is empty string :(
+        [FactSkipWhenMockApi] // organisationId is empty string :(
         public void Event_Is_Updated()
         {
             // setup
@@ -44,7 +44,7 @@ namespace Library.Tests
 
 
 
-        [Fact] // organisationId is empty string :(
+        [FactSkipWhenMockApi] // organisationId is empty string :(
         public void Event_Property_Is_Updated()
         {
             const long logoId = 120775453;
@@ -56,7 +56,7 @@ namespace Library.Tests
 
 
 
-        [Fact] // organisationId is empty string :(
+        [FactSkipWhenMockApi] // organisationId is empty string :(
         public void Event_Details_Are_Updated()
         {
             // setup
@@ -79,7 +79,7 @@ namespace Library.Tests
         }
 
 
-        [Fact] // ticket class sales_start is null :(
+        [FactSkipWhenMockApi] // ticket class sales_start is null :(
         public void Event_Publishing_Succeeds()
         {
             var ticketClass = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { "electronic" });
@@ -92,7 +92,7 @@ namespace Library.Tests
         }
 
 
-        [Fact] // ticket class sales_start is null :(
+        [FactSkipWhenMockApi] // ticket class sales_start is null :(
         public void Event_Unpublishing_Succeeds()
         {
             var ticketClass = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { "electronic" });

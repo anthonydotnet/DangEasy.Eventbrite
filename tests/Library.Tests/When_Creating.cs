@@ -39,7 +39,7 @@ namespace Library.Tests
         }
 
 
-        [FactSkipWhenMockApiAttribute] // sales_start is null :(
+        [FactSkipWhenMockApi] // sales_start is null :(
         public void TicketClass_Has_Default_Dates_Created()
         {
             var expected_salesStartUtc = Data_ExecutionStartUtc;
@@ -59,7 +59,7 @@ namespace Library.Tests
         }
 
 
-        [Fact] // sales_start is null :(
+        [FactSkipWhenMockApi] // sales_start is null :(
         public void TicketClass_Has_Values_Created()
         {
             var salesStartUtc = Data_ExecutionStartUtc;
@@ -86,7 +86,7 @@ namespace Library.Tests
         }
 
 
-        [Fact] // cannot bind LiveStreamUrl  :(
+        [FactSkipWhenMockApi] // cannot bind LiveStreamUrl  :(
         public void StructuredDigitalContent_Has_Values_Created()
         {
             const string title = "My Text";
@@ -100,7 +100,7 @@ namespace Library.Tests
         }
 
 
-        [Fact] // Various properties are null - eg. Name
+        [FactSkipWhenMockApi] // Various properties are null - eg. Name
         public void Event_Has_Values_Created()
         {
             var res = Event; // created in base class
@@ -122,7 +122,7 @@ namespace Library.Tests
         }
 
 
-        [Fact] // Body.Text is empty string
+        [FactSkipWhenMockApi] // Body.Text is empty string
         public void StructuredContent_Is_Created()
         {
             var bodyText = "My Text";

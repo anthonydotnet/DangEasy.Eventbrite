@@ -6,7 +6,7 @@ namespace Library.Tests
 {
     public class When_Copying : BaseEventSetup, IDisposable
     {
-        [Fact] // organization_id is null :(
+        [FactSkipWhenMockApi] // organization_id is null :(
         public void Event_Is_Copied()
         {
             var res = Service.CopyEvent(Event.Id).Result;
