@@ -1,9 +1,10 @@
-using Xunit;
+﻿using Xunit;
 using DangEasy.Eventbrite.Models.Request;
 using System;
 using DangEasy.Eventbrite.Builders;
 using Library.Tests.Extensions;
 using DangEasy.Eventbrite.Constants;
+using System.Collections.Generic;
 
 namespace Library.Tests
 {
@@ -75,6 +76,21 @@ namespace Library.Tests
             var res = Service.GetEvent(Event.Id).Result;
 
             Assert.True(res.Id > 1);
+        }
+
+
+        [FactSkipWhenMockApi] // sales_start is null :(
+        public void TicketClasses_Are_Retrieved()
+        {
+            var salesStartUtc = Data_ExecutionStartUtc;
+            var salesEndUtc = Event.Start.Utc.AddMinutes(-5);
+            var model = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { Request.TicketClass.DeliveryMethodElectronic }, salesStartUtc, salesEndUtc, true);
+
+            _ = Service.CreateTicketClass(Event.Id, model).Result;
+
+            var res = Service.GetTicketClasses(Event.Id).Result;
+
+            Assert.NotEmpty(res.TicketClasses);
         }
     }
 }

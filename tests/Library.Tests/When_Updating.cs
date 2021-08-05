@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Xunit;
 using DangEasy.Eventbrite.Models.Request;
 using System.Collections.Generic;
@@ -102,6 +102,22 @@ namespace Library.Tests
             var res = Service.UnPublishEvent(Event.Id).Result;
 
             Assert.True(res);
+        }
+
+
+        [FactSkipWhenMockApi] // ticket class sales_start is null :(
+        public void TicketClass_Is_Updated()
+        {
+            var ticketClass = RequestModelBuilder.BuildTicketClass("General Admission", 3, new List<string>() { "electronic" });
+            var ticketClassResponseModel = Service.CreateTicketClass(Event.Id, ticketClass).Result;
+
+            var newSalesEndDate = DateTime.UtcNow.AddHours(1);
+            ticketClass.SalesEndUtc = newSalesEndDate;
+            var res = Service.UpdateTicketClass(Event.Id, ticketClassResponseModel.Id, ticketClass).Result;
+
+            Assert.Equal(res.SalesEndUtc.Hour, newSalesEndDate.Hour);
+            Assert.Equal(res.SalesEndUtc.Minute, newSalesEndDate.Minute);
+            Assert.Equal(res.SalesEndUtc.Second, newSalesEndDate.Second);
         }
     }
 }

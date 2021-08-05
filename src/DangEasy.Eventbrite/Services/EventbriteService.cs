@@ -36,6 +36,7 @@ namespace DangEasy.Eventbrite.Services
 
         Task<Event> UpdateEvent(long eventId, RequestModels.Event @event);
         Task<Event> UpdateEvent(long eventId, string property, string value);
+        Task<TicketClass> UpdateTicketClass(long eventId, long ticketClassId, RequestModels.TicketClass ticketClass);
     }
 
 
@@ -281,6 +282,20 @@ namespace DangEasy.Eventbrite.Services
         }
 
 
+        public async Task<TicketClass> UpdateTicketClass(long eventId, long ticketClassId, RequestModels.TicketClass ticketClass)
+        {
+            var request = BuildRequest($"events/{eventId}/ticket_classes/{ticketClassId}/", ContentTypeJson);
+
+            var json = JsonConvert.SerializeObject(ticketClass, new JsonSerializerSettings
+            {
+                DateFormatString = DateFormatString
+            });
+
+            var res = await request.PostStringAsync(json).ReceiveJson<TicketClass>();
+
+            return res;
+        }
+
 
         #region private
         private FlurlRequest BuildRequest(string path, string contentType = null)
@@ -295,6 +310,8 @@ namespace DangEasy.Eventbrite.Services
 
             return request;
         }
+
+       
 
 
 
